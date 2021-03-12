@@ -1,5 +1,6 @@
 Flask==1.1.2
 Flask-Assets==2.0
 Flask-Debug==0.4.3
+Flask-WTF==0.14.3
 requests==2.24.0
 requests-html==0.10.0

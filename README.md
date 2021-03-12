@@ -87,9 +87,9 @@ py -m venv venv/
 ```
 git init
 git add .
-git commit -m "first boiler plate commit"
+git commit -m "first commit"
 git branch -M main
-git remote add origin https://github.com/<username>/python-flask-boilerplate.git
+git remote add origin https://github.com/berryny/open_data_python_mta.git
 git push -u origin main
 ```
 - push to repository from the command line

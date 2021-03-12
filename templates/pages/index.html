@@ -1,9 +1,28 @@
 {% extends "base.html" %}
-{% block title %}Home Page{% endblock %}
+{% block title %}Subway Station Map{% endblock %}
 {% block content %}
-<div class="container-fluid my-4">
-  <div class="container">
-    <h1>Welcome to Python Flask Boiler Plate</h1>
+  <h1 class="text-center">Station Map</h1>
+  <div class="container-fluid" id="equip_map">
+    <form action="javascript:void(0)" method="POST">
+      <div class="row g-3">
+
+        <div class="col-md-6 text-center">
+          <label for="inputState">Borough</label><br>
+          {{ form.boro_station }}
+        </div>
+        <div class="col-md-6 text-center" id="equipment_filter">
+          <label for="inputState">Filter</label><br>
+          {{ form.equip_filter_type }}
+        </div>
+
+        <div class="col-12 my-2 text-center">
+          <button type="submit" class="btn btn-primary btn-lg btn_filter_map" disabled>Search</button>
+          <button type="reset" class="btn btn-outline-secondary btn-lg btn_reset_map">Reset</button>
+          <button type="button" class="btn btn-outline-info btn-lg btn_clear_map">Clear Map</button>
+        </div>
+      </div>
+    </form>
   </div>
-</div>
+
+  <div class="container-fluid" id="mapid"></div>
 {% endblock %}
