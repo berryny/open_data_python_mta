@@ -31,15 +31,27 @@ api_key = os.environ['API_KEY']
 
 # MTA NYC Transit Station Locations – Updated February 17, 2021
 station_location = 'Stations.csv'
-station_location_csv = pd.read_csv(station_location, header=0)
-subway_stations = list(station_location_data.values)
-station_resp = requests.head(station_location)
+subway_stations = parse_stations()
+
+def parse_stations():
+    station_resp = requests.head(station_location)
+    if station_resp.stat_code != 200:
+        raise Exception("CSV Not Found")
+    else:
+        station_location_csv = pd.read_csv(station_location, header=0)
+        subway_stations = list(station_location_csv.values)
+    
+        return subway_stations
 
 # Elevator and Escalator Equipment - API Key
 def getEquipData():
     elevescequip = requests.get('https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fnyct_ene_equipments.json', headers={"x-api-key": api_key, "Content-Type":"application/json"})
     # print('elevescequip',elevescequip)
-    return elevescequip
+    if elevescequip.status_code == 200:
+        return json.loads(elevescequip.text)
+
+    else:
+        raise Exception("Equipment data not found")
 
 #----------------------------------------------------------------------------#
 # Check Feed every 5 minutes
@@ -48,7 +60,9 @@ def getEquipData():
 def getOutageStatus():
     elevesc_outage = requests.get('https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fnyct_ene.json', headers={"x-api-key": api_key, "Content-Type":"application/json"})
     # print('elevesc_outage',elevesc_outage)
-    return elevesc_outage
+        return elevesc_outage
+    else:
+        raise Exception("Outage status not found")
     
 #----------------------------------------------------------------------------#
 # App Config.
@@ -89,35 +103,49 @@ app.secret_key = os.environ.get('SECRET_KEY')
 #----------------------------------------------------------------------------#
 
 # Create NYC boroughs list
-borough_dict = {}
-def nyc_boros():
-    boroughs = None
-    if elevescequip.status_code == 200:
-        elevescequip_boros = json.loads(elevescequip.text)
-        boroughs = set(x['borough'] for x in elevescequip_boros)
 
-        for b in boroughs:
-            if b == 'BX':
-                borough_dict[b] = "The Bronx"
-            elif b == 'QNS':
-                borough_dict[b] = "Queens"
-            elif b == 'BKN':
-                borough_dict[b] = "Brooklyn"
-            elif b == 'MN':
-                borough_dict[b] = "Manhattan"
-            else:
-                borough_dict["Other"] = "Other"
-    else:
-        print('Error', elevescequip.status_code)
+def nyc_boros():
+    elevescequip_boros = getEquipData()
+    boroughs = set(x['borough'] for x in elevescequip_boros)
+    borough_dict = {}
+    for b in boroughs:
+        if b == 'BX':
+            borough_dict[b] = "The Bronx"
+        elif b == 'QNS':
+            borough_dict[b] = "Queens"
+        elif b == 'BKN':
+            borough_dict[b] = "Brooklyn"
+        elif b == 'MN':
+            borough_dict[b] = "Manhattan"
+        else:
+            borough_dict["Other"] = "Other"
+   
+    return borough_dict
+
  
 # Render HTML Form with borough and filter drop downs
 class EquipFilterForm(FlaskForm):
-    nyc_boros()
-
+    borough_dict = nyc_boros()
     boro_station = SelectField('boroughs', choices=[('selected', 'Select a boroughs...')]+[(k,v) for k,v in borough_dict.items()], render_kw={"class": "form-select"})
     equip_filter_type = SelectField('equip_type', choices=[('all', 'All'),('elev','Elevator'),('esc', 'Escalator'),('outages', 'Outages')], render_kw={"class": "form-select"})
 
+    
+"""
+Best practices
+- Each function should have a single responsibility
+    - e.g. separate the fetching of the data from the parsing of the data from the usage of the data.
+- Limit the number of globals you use to just what needs to be configured at startup time
+    - i.e. Anything in the global scope should be set once
+- Think about what data needs to be fetched once and can live in memory and what data need to be updated each time a user hits the route
+- General things when making a project (in order)
+    - Make sure it works (though if you organize your code correctly in the beginning it makes things easier)
+    - Make sure the code is organized correctly
+    - Make sure it runs efficiently
+- When thinking about abstracting, creating functions and classes I also think about how many times am I going to call something non-trivial
+"""
 
+    
+    
 #----------------------------------------------------------------------------#
 # Steps
 #   Check the status code for 200 (found)
@@ -131,9 +159,10 @@ def createStationFeed(equipData, stationData):
 class StationMapping():
     def __init__(self, feed):
         self.feed = feed
+        self.parsed_data = json.loads(feed)
         
     def allstations(self):
-        # grabbing the feed
+        return self.parsed_data["subway_stations"]
         pass
     
     def elevstations(self):
