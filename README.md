@@ -10,7 +10,9 @@ Python was created in the late 1980s, and first released in 1991, by Guido van R
 
 [source](https://en.wikipedia.org/wiki/Python_%28programming_language%29)
 
-Jinja [Template Designer Documentation](https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures)
+## Python HTML Template
+
+Jinja [Template Designer Documentation](https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures) "is a modern and designer-friendly templating language for Python, modelled after Django's templates."
 
 ## What is Flask?
 
@@ -39,7 +41,7 @@ Flask is a microframework for Python based on Werkzeug and Jinja2.
 
 - Clone the repo:
   ```
-  git clone [https://github.com/berryny/python-flask-boilerplate.git](https://github.com/berryny/python-flask-boilerplate.git)
+  git clone https://github.com/<username>/python-flask-boilerplate.git
   cd python-flask-boilerplate
   ```
 - Install Virtual Environment:
