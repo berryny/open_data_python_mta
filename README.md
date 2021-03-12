@@ -35,34 +35,6 @@ Flask is a microframework for Python based on Werkzeug and Jinja2.
     - [Try Jupyter](https://jupyter.org/try)
     - [Jupyter notebooks with Binder](https://mybinder.org/)
 
-## Git
-
-[Git](https://git-scm.com/) is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.
-
-## Github
-
-[GitHub, Inc.](https://github.com/) is a subsidiary of Microsoft which provides hosting for software development and version control using Git. It offers the distributed version control and source code management functionality of Git, plus its own features.
-
-## GitHub Setup
-
-- …or create a new repository on the command line
-```
-echo "# python-flask-boilerplate" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/berryny/python-flask-boilerplate.git
-git push -u origin main
-```
-
-- …or push an existing repository from the command line
-```
-git remote add origin https://github.com/berryny/python-flask-boilerplate.git
-git branch -M main
-git push -u origin main
-```
-
 ## Quick Start
 
 - Clone the repo:
@@ -98,6 +70,32 @@ py -m venv venv/
     - [http://localhost:5000](http://localhost:5000)
     - [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
     - To stop server Press CTRL+C to quit 
+
+## Git
+
+[Git](https://git-scm.com/) is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.
+
+## Github
+
+[GitHub, Inc.](https://github.com/) is a subsidiary of Microsoft which provides hosting for software development and version control using Git. It offers the distributed version control and source code management functionality of Git, plus its own features.
+
+## GitHub Setup
+
+- …or create a new repository on the command line
+```
+git init
+git add .
+git commit -m "first boiler plate commit"
+git branch -M main
+git remote add origin https://github.com/<username>/python-flask-boilerplate.git
+git push -u origin main
+```
+- push to repository from the command line
+```
+git add .
+git commit -m "commit message"
+git push -u origin main
+```
 
 ### Create a README.md
 
