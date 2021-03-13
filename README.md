@@ -52,7 +52,6 @@ Flask is a microframework for Python based on Werkzeug and Jinja2.
   cd py-boilerplate
   ```
 - Install Virtual Environment:
-- Install Virtual Environment:
 ```
 pip install virtualenv
 virtualenv venv
