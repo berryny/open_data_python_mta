@@ -55,10 +55,10 @@ $('button.btn_filter_map').on('click', function (e) {
         .then(function (response) {
             response.json().then(function (dataFilter) {
                 clearMapMarkers();
-                
+
                 for (const property in dataFilter) {
                     dataFilter[property].forEach(element => {
-                       console.log('ele',element);
+                    //    console.log('ele',element);
                         L.marker([element['Coordinates'][0], element['Coordinates'][1]]).addTo(subwaymap)
                             .bindPopup("<b>" + element['Station']['station'] + "</b><br />Train: " + element['Station']['trainno']).openPopup();
                    });
