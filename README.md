@@ -134,6 +134,14 @@ git commit -m "commit message"
 git push -u origin main
 ```
 
+## Deployment
+
+This project is configured to deploy onto [Heroku](https://heroku.com/apps)
+
+### Install the Heroku CLI
+
+Download and install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
+
 ### Create a README.md
 
 Basic writing and formatting syntax
