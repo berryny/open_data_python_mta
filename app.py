@@ -26,7 +26,7 @@ from dotenv import load_dotenv, find_dotenv # imports module for dotenv
 load_dotenv(find_dotenv()) # loads .env from root directory
 
 # The root directory requires a .env file with API_KEY assigned/defined within
-# and dotenv installed from pypi. Get API key from http://datamine.mta.info/user
+# and dotenv installed from pypi. Get API key from https://api.mta.info/#/signup
 api_key = os.environ['API_KEY']
 
 
@@ -168,12 +168,14 @@ def parseEquipmentType():
 
     equipmentTypes = {'elevator': statELArr, 'escalator': statESArr, 'powerwalk': statPWArr}
     return equipmentTypes
-    
+
+parseEquipmentData = parseEquipmentType()
+
 class StationMapping:
     def __init__(self, borough, equipment):
         self.boro = borough
         self.equip = equipment
-        self.parsed_data = parseEquipmentType()
+        self.parsed_data = parseEquipmentData
         # print('station',self)
         
     def allstations(self):
