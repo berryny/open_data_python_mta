@@ -1,4 +1,4 @@
-gunicorn==20.0.4
+gunicorn
 Flask==1.1.2
 Flask-Assets==2.0
 Flask-Debug==0.4.3
