@@ -76,11 +76,27 @@ $('button.btn_filter_map').on('click', function (e) {
                     dataFilter[property].forEach(element => {
                     //    console.log('ele',element);
                         L.marker([element['Coordinates'][0], element['Coordinates'][1]]).addTo(subwaymap)
+                            .on('click', onMarkerMapClick)
                             .bindPopup("<b>" + element['Station']['station'] + "</b><br />Train: " + element['Station']['trainno']).openPopup();
                    });
                 }
                 var popup = L.popup();
 
+                function onMarkerMapClick(e) {
+                    var curPos = e.latlng;
+                    curPosArr = [curPos.lat, curPos.lng]
+                    // console.log(curPos.lat, curPos.lng);
+                    for (const property in dataFilter) {
+                        dataFilter[property].forEach(element => {
+                            console.log(element['Coordinates'], curPosArr);
+                            for (let i = 0; i < curPosArr.length; i++) {
+                                if (curPosArr[i] == element['Coordinates'][i]) {
+                                    console.log("yes",element);
+                                 }
+                            }
+                        });
+                    }
+                }
                 function onMapClick(e) {
                     popup
                         .setLatLng(e.latlng)
