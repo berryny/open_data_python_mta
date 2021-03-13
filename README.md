@@ -31,6 +31,10 @@ Flask is a microframework for Python based on Werkzeug and Jinja2.
 - [pip](https://pip.pypa.io/en/stable/installing/)
 - [git](https://git-scm.com/downloads)
 
+# Get MTA API
+
+- Get API key from https://api.mta.info/#/signup
+
 # Software Installation
 
 - [Anaconda](https://www.anaconda.com/) is the birthplace of Python data science.
@@ -75,6 +79,13 @@ py -m venv venv/
   ```
   pip install -r requirements.txt
   ```
+- Create `.env` file
+  - Add to file
+  ```
+  SECRET_KEY=CREATEYOUROWNSECRETKEY
+  API_KEY=MTAAPIKEYGOESHERE
+  ```
+
 -  Run the development server:
   ```
   py app.py
