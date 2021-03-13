@@ -46,7 +46,7 @@ Flask is a microframework for Python based on Werkzeug and Jinja2.
 
 ## Layout Ideas
 
-Helpful UX/UX tools to layout out your thoughts before design.
+Helpful UX/UI tools to layout out your thoughts before design.
 
 - [Behance](https://www.behance.net/search/projects?field=ui%2Fux) Design ideas
 - [Figma](https://www.figma.com/)
@@ -57,7 +57,7 @@ Helpful UX/UX tools to layout out your thoughts before design.
 - Clone the repo:
   ```
   git clone https://github.com/berryny/open_data_python_mta.git
-  cd python-flask-boilerplate
+  cd open_data_python_mta
   ```
   - Or place into a custom name folder
   ```
