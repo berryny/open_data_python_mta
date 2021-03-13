@@ -44,14 +44,19 @@ Flask is a microframework for Python based on Werkzeug and Jinja2.
 
 - Clone the repo:
   ```
-  git clone https://github.com/berryny/python-flask-boilerplate.git
+  git clone https://github.com/berryny/open_data_python_mta.git
   cd python-flask-boilerplate
   ```
   ```
-  git clone https://github.com/berryny/python-flask-boilerplate.git py-boilerplate
+  git clone https://github.com/berryny/open_data_python_mta.git py-boilerplate
   cd py-boilerplate
   ```
 - Install Virtual Environment:
+- Install Virtual Environment:
+```
+pip install virtualenv
+virtualenv venv
+```
 ```
 py -m venv venv/
 ```
