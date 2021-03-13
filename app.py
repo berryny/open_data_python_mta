@@ -178,27 +178,34 @@ class StationMapping:
         
     def allstations(self):
         # return all stations
-        # return self.parsed_data["subway_stations"]
-        # pass
-        alltype = self.parsed_data
-        return alltype['elevator'], esctype['escalator'], pwtype['powerwalk']
+        print("outagestations", self)
+        return None
 
     def elevstations(self):
         # return stations with elevators
-        elevtype = self.parsed_data
-        return elevtype['elevator']
+        stationDict = self.parsed_data
+        return self.filterMap(stationDict['elevator'])
 
     def escstations(self):
         # return stations with escalators
-        esctype = self.parsed_data
-        return esctype['escalator']
+        stationDict = self.parsed_data
+        return self.filterMap(stationDict['escalator'])
     
     def pwstations(self):
         # return stations with power walk
-        pwtype = self.parsed_data
-        
-        return pwtype['powerwalk']
+        stationDict = self.parsed_data
+        return self.filterMap(stationDict['powerwalk'])
     
+    def filterMap(self,typeofEquip):
+        filterArr = []
+        for flt in typeofEquip:
+            if flt['Station']['borough'] == self.boro:
+                filterArr.append(flt)
+        if filterArr:
+            return filterArr
+        else:
+            return None
+
     def outagestations(self):
         # return only equip outages
         print("outagestations", self)
