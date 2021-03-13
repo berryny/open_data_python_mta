@@ -69,19 +69,6 @@ def getEquipData():
         raise Exception("Equipment data not found")
 
 #----------------------------------------------------------------------------#
-# Data ref every 5 minutes
-#----------------------------------------------------------------------------#
-# Elevator and Escalator Outage - API Key
-def getOutageStatus():
-    elevesc_outage = requests.get('https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fnyct_ene.json', headers={"x-api-key": api_key, "Content-Type":"application/json"})
-    print('elevesc_outage',elevesc_outage)
-    if (elevesc_outage):
-        return elevesc_outage
-    else:
-        raise Exception("Outage status not found")
-# getOutageStatus()
-
-#----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
 
@@ -147,7 +134,6 @@ class EquipFilterForm(FlaskForm):
     borough_dict = nyc_boros()
     boro_station = SelectField('boroughs', choices=[('selected', 'Select a boroughs...')]+[(k,v) for k,v in borough_dict.items()], render_kw={"class": "form-select"})
     equip_filter_type = SelectField('equip_type', choices=[('elevator','Elevator'),('escalator', 'Escalator'),('powerwalk', 'Power Walk')], render_kw={"class": "form-select"})
-    # ('all', 'All'),('outages', 'Outages')
 
 def parseEquipmentType():
     # function parse and merge data
