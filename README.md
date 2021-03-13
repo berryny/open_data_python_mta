@@ -44,6 +44,14 @@ Flask is a microframework for Python based on Werkzeug and Jinja2.
     - [Try Jupyter](https://jupyter.org/try)
     - [Jupyter notebooks with Binder](https://mybinder.org/)
 
+## Layout Ideas
+
+Helpful UX/UX tools to layout out your thoughts before design.
+
+- [Behance](https://www.behance.net/search/projects?field=ui%2Fux) Design ideas
+- [Figma](https://www.figma.com/)
+- [Adobe XD](https://www.adobe.com/products/xd.html)
+
 ## Quick Start
 
 - Clone the repo:
@@ -116,7 +124,7 @@ git init
 git add .
 git commit -m "first commit"
 git branch -M main
-git remote add origin https://github.com/berryny/open_data_python_mta.git
+git remote add origin https://github.com/<yourusername>/open_data_python_mta.git
 git push -u origin main
 ```
 - push to repository from the command line
