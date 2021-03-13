@@ -9,6 +9,8 @@ from flask import Flask, request, redirect, url_for, render_template, session, j
 
 import requests, json, os
 
+import pandas as pd
+
 # Initialize the app by creating an Environment instance, and registering your assets with it in the form of so called bundles.
 from flask_assets import Environment, Bundle
 
@@ -17,8 +19,10 @@ from flask_wtf import FlaskForm
 from wtforms import SelectField
 
 #----------------------------------------------------------------------------#
-# MTA Data Feeds
+# Use API key to access MTA Data
 #----------------------------------------------------------------------------#
+from dotenv import load_dotenv, find_dotenv # imports module for dotenv
+load_dotenv(find_dotenv()) # loads .env from root directory
 
 # The root directory requires a .env file with API_KEY assigned/defined within
 # and dotenv installed from pypi. Get API key from http://datamine.mta.info/user
@@ -30,18 +34,29 @@ api_key = os.environ['API_KEY']
 #----------------------------------------------------------------------------#
 
 # MTA NYC Transit Station Locations – Updated February 17, 2021
-station_location = 'Stations.csv'
-subway_stations = parse_stations()
+# station_location = 'https://atisdata.s3.amazonaws.com/Station/Stations.csv'
+station_location = './dataset/Stations.csv'
 
 def parse_stations():
-    station_resp = requests.head(station_location)
-    if station_resp.stat_code != 200:
+    station_location_data = pd.read_csv(station_location, header=0)
+    df = pd.DataFrame(station_location_data)
+    mapStationArr = []
+
+    if (df.size <= 0):
         raise Exception("CSV Not Found")
-    else:
-        station_location_csv = pd.read_csv(station_location, header=0)
-        subway_stations = list(station_location_csv.values)
-    
-        return subway_stations
+    else:    
+        adaelevesc = getEquipData()
+        for i in df.index:
+
+            for selected_station in adaelevesc:
+                if df.loc[i, 'Complex ID'] == int(selected_station['stationcomplexid']):
+                    mapStationObj = {}
+                    mapStationObj['Station'] = selected_station
+                    mapStationObj['Coordinates'] = [df.loc[i, 'GTFS Latitude'], df.loc[i, 'GTFS Longitude']]
+                    mapStationArr.append(mapStationObj)
+        
+        # print('mapStationArr',mapStationArr)
+        return mapStationArr
 
 # Elevator and Escalator Equipment - API Key
 def getEquipData():
@@ -49,21 +64,25 @@ def getEquipData():
     # print('elevescequip',elevescequip)
     if elevescequip.status_code == 200:
         return json.loads(elevescequip.text)
-
     else:
         raise Exception("Equipment data not found")
 
 #----------------------------------------------------------------------------#
-# Check Feed every 5 minutes
+# Data ref every 5 minutes
 #----------------------------------------------------------------------------#
 # Elevator and Escalator Outage - API Key
 def getOutageStatus():
     elevesc_outage = requests.get('https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fnyct_ene.json', headers={"x-api-key": api_key, "Content-Type":"application/json"})
-    # print('elevesc_outage',elevesc_outage)
+    print('elevesc_outage',elevesc_outage)
+    if (elevesc_outage):
         return elevesc_outage
     else:
         raise Exception("Outage status not found")
-    
+# getOutageStatus()
+
+
+
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -75,12 +94,14 @@ bundles = {
     'all_js': Bundle(
         'js/jquery.min.js',
         'bootstrap/js/bootstrap.bundle.min.js',
+        'leaflet/leaflet.js',
         'js/scripts.js',
         output='gen/all.js'),
 
     'all_css': Bundle(
         'bootstrap/css/bootstrap.min.css',
         'fontawesome/css/all.css',
+        'leaflet/leaflet.css',
         'css/style.css',
         output='gen/all.css'),
 }
@@ -129,29 +150,6 @@ class EquipFilterForm(FlaskForm):
     boro_station = SelectField('boroughs', choices=[('selected', 'Select a boroughs...')]+[(k,v) for k,v in borough_dict.items()], render_kw={"class": "form-select"})
     equip_filter_type = SelectField('equip_type', choices=[('all', 'All'),('elev','Elevator'),('esc', 'Escalator'),('outages', 'Outages')], render_kw={"class": "form-select"})
 
-    
-"""
-Best practices
-- Each function should have a single responsibility
-    - e.g. separate the fetching of the data from the parsing of the data from the usage of the data.
-- Limit the number of globals you use to just what needs to be configured at startup time
-    - i.e. Anything in the global scope should be set once
-- Think about what data needs to be fetched once and can live in memory and what data need to be updated each time a user hits the route
-- General things when making a project (in order)
-    - Make sure it works (though if you organize your code correctly in the beginning it makes things easier)
-    - Make sure the code is organized correctly
-    - Make sure it runs efficiently
-- When thinking about abstracting, creating functions and classes I also think about how many times am I going to call something non-trivial
-"""
-
-    
-    
-#----------------------------------------------------------------------------#
-# Steps
-#   Check the status code for 200 (found)
-#   Parse equipment and station data to match station id
-#   latlong
-#----------------------------------------------------------------------------#
 def createStationFeed(equipData, stationData):
     # function parse and merge data
     pass
@@ -159,7 +157,7 @@ def createStationFeed(equipData, stationData):
 class StationMapping():
     def __init__(self, feed):
         self.feed = feed
-        self.parsed_data = json.loads(feed)
+        self.parsed_data = parse_stations()
         
     def allstations(self):
         return self.parsed_data["subway_stations"]
@@ -191,6 +189,14 @@ def home():
 @app.route('/about')
 def about():
     return render_template('pages/about.html')
+
+@app.route("/stations_with_equip/<borough_filter>/<equip_filter>/", methods=['GET', 'POST'])
+def stations_with_equip(borough_filter,equip_filter):
+    
+    print("borough_filter",borough_filter)
+    print("equip_filter",equip_filter)
+
+    return jsonify({'status': 'OK'})
 
 @app.errorhandler(404)
 def page_not_found(e):

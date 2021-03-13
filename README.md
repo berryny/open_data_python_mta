@@ -22,6 +22,8 @@ Flask is a microframework for Python based on Werkzeug and Jinja2.
 
 - [Bootstrap](https://getbootstrap.com/) "is a free and open-source CSS framework directed at responsive, mobile-first front-end web development."
 - [Font Awesome](https://fontawesome.com/) "is a font and icon toolkit based on CSS and Less."
+- [Leaflet](https://leafletjs.com/download.html) "an open-source JavaScript library for mobile-friendly interactive maps"
+  - [Mapbox Streets](https://www.mapbox.com/maps/streets) is a comprehensive, general-purpose map that emphasizes accurate, legible styling of road and transit networks.
 
 # Environment Setup Installation
 

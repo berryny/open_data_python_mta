@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% block title %}404 Page{% endblock %}
 {% block content %}
+<div class="container my-4">
   <h1>Page Not Found</h1>
 
   <p>Unable to locate requested page <br>
-    <a href="{{ url_for('index') }}">go index page</a></p>
-  {% endblock %}
+    <a href="{{ url_for('home') }}">go index page</a>
+  </p>
+</div>
+{% endblock %}
