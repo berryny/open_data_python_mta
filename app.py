@@ -10,6 +10,7 @@ from flask import Flask, request, redirect, url_for, render_template, session, j
 import requests, json, os
 
 import pandas as pd
+import numpy as np
 
 # Initialize the app by creating an Environment instance, and registering your assets with it in the form of so called bundles.
 from flask_assets import Environment, Bundle
@@ -37,7 +38,7 @@ api_key = os.environ['API_KEY']
 # station_location = 'https://atisdata.s3.amazonaws.com/Station/Stations.csv'
 station_location = './dataset/Stations.csv'
 
-def parse_stations():
+def parseStations():
     station_location_data = pd.read_csv(station_location, header=0)
     df = pd.DataFrame(station_location_data)
     mapStationArr = []
@@ -79,9 +80,6 @@ def getOutageStatus():
     else:
         raise Exception("Outage status not found")
 # getOutageStatus()
-
-
-
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -148,31 +146,63 @@ def nyc_boros():
 class EquipFilterForm(FlaskForm):
     borough_dict = nyc_boros()
     boro_station = SelectField('boroughs', choices=[('selected', 'Select a boroughs...')]+[(k,v) for k,v in borough_dict.items()], render_kw={"class": "form-select"})
-    equip_filter_type = SelectField('equip_type', choices=[('all', 'All'),('elev','Elevator'),('esc', 'Escalator'),('outages', 'Outages')], render_kw={"class": "form-select"})
+    equip_filter_type = SelectField('equip_type', choices=[('elevator','Elevator'),('escalator', 'Escalator'),('powerwalk', 'Power Walk')], render_kw={"class": "form-select"})
+    # ('all', 'All'),('outages', 'Outages')
 
-def createStationFeed(equipData, stationData):
+def parseEquipmentType():
     # function parse and merge data
-    pass
+    parsestations = parseStations()
+    statELArr = []
+    statESArr = []
+    statPWArr = []
 
-class StationMapping():
-    def __init__(self, feed):
-        self.feed = feed
-        self.parsed_data = parse_stations()
+    for _station in parsestations:
+        if _station['Station']['equipmenttype'] == 'EL':
+            statELArr.append(_station)
+        elif _station['Station']['equipmenttype'] == 'ES':
+            statESArr.append(_station)
+        elif _station['Station']['equipmenttype'] == 'PW':
+            statPWArr.append(_station)
+        else:
+            print('else',  _station['Station']['equipmenttype'])
+
+    equipmentTypes = {'elevator': statELArr, 'escalator': statESArr, 'powerwalk': statPWArr}
+    return equipmentTypes
+    
+class StationMapping:
+    def __init__(self, borough, equipment):
+        self.boro = borough
+        self.equip = equipment
+        self.parsed_data = parseEquipmentType()
+        # print('station',self)
         
     def allstations(self):
-        return self.parsed_data["subway_stations"]
-        pass
-    
+        # return all stations
+        # return self.parsed_data["subway_stations"]
+        # pass
+        alltype = self.parsed_data
+        return alltype['elevator'], esctype['escalator'], pwtype['powerwalk']
+
     def elevstations(self):
-        # return only elevators
-        pass
+        # return stations with elevators
+        elevtype = self.parsed_data
+        return elevtype['elevator']
 
     def escstations(self):
-        # return only escalators
-        pass
+        # return stations with escalators
+        esctype = self.parsed_data
+        return esctype['escalator']
+    
+    def pwstations(self):
+        # return stations with power walk
+        pwtype = self.parsed_data
+        
+        return pwtype['powerwalk']
     
     def outagestations(self):
-        pass
+        # return only equip outages
+        print("outagestations", self)
+        return None
 
 #----------------------------------------------------------------------------#
 # Controllers.
@@ -195,8 +225,28 @@ def stations_with_equip(borough_filter,equip_filter):
     
     print("borough_filter",borough_filter)
     print("equip_filter",equip_filter)
+    stations = StationMapping(borough_filter,equip_filter)
+    getCoordinates = ''
 
-    return jsonify({'status': 'OK'})
+    if equip_filter == 'all':
+       stations.allstations()
+    elif equip_filter == 'elevator':
+        print('elevator')
+        getCoordinates = stations.elevstations()
+    elif equip_filter == 'escalator':
+        print('escalator')
+        getCoordinates = stations.escstations()
+    elif equip_filter == 'powerwalk':
+        getCoordinates = stations.pwstations()
+            
+    elif equip_filter == 'outages':
+        print('outages')
+        getCoordinates = stations.outagestations()
+    else:
+        print('else')
+        getCoordinates = stations.allstations()
+
+    return jsonify({'status': getCoordinates})
 
 @app.errorhandler(404)
 def page_not_found(e):

@@ -18,17 +18,13 @@ document.querySelector(".year").innerHTML = new Date().getFullYear();
 
 // Enable Search button once boro is selected from dropdown
 let boro_select_map = document.getElementById('boro_station');
-let equip_select_filter = document.getElementById('equip_filter_type');
 let boro_station_map = ''
-let equip_filter_map = ''
 
 if (boro_select_map) {
     boro_select_map.onchange = function (params) {
         boro_station_map = boro_select_map.value
         document.querySelector('.btn_filter_map').removeAttribute('disabled')
     }
-    equip_filter_map = equip_select_filter.value
-
 }
 
 /*
@@ -51,8 +47,20 @@ var subwaymap = L.map('mapid', {
     ]
 });
 
+function clearMapMarkers() {
+    subwaymap.eachLayer(function (layer) {
+        if (layer instanceof L.Marker) {
+            // remove layer
+            subwaymap.removeLayer(layer);
+        }
+    })
+}
+
 $('button.btn_filter_map').on('click', function (e) {
     url = ''
+    let equip_select_filter = document.getElementById('equip_filter_type');
+    equip_filter_map = equip_select_filter.value
+
     if (boro_station_map != '' && equip_filter_map != '') {
         url = '/stations_with_equip/' + boro_station_map + '/' + equip_filter_map + '/'
     } else {
@@ -62,12 +70,30 @@ $('button.btn_filter_map').on('click', function (e) {
     fetch(url)
         .then(function (response) {
             response.json().then(function (dataFilter) {
-                console.log('dataFilter',dataFilter);
-            }).catch(function (error) {
-                console.log(error);
-                console.log("Err: Station Map Filter Data");
-            });
-    })      
+                clearMapMarkers();
+                
+                for (const property in dataFilter) {
+                    dataFilter[property].forEach(element => {
+                       console.log('ele',element);
+                        L.marker([element['Coordinates'][0], element['Coordinates'][1]]).addTo(subwaymap)
+                            .bindPopup("<b>" + element['Station']['station'] + "</b><br />Train: " + element['Station']['trainno']).openPopup();
+                   });
+                }
+                var popup = L.popup();
+
+                function onMapClick(e) {
+                    popup
+                        .setLatLng(e.latlng)
+                        .setContent("You clicked the map at " + e.latlng.toString())
+                        .openOn(subwaymap);
+                }
+
+                subwaymap.on('click', onMapClick);
+            })
+        }).catch(function (error) {
+            console.log("Err: Station Map Filter Data");
+            console.log(error);
+        });
 });          
 $(document).ready(function () {
  
