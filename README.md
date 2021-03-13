@@ -80,7 +80,7 @@ py -m venv venv/
   ```
   pip install -r requirements.txt
   ```
-- Create `.env` file
+- Create a `.env` file in the root directory
   - Add to file
   ```
   SECRET_KEY=CREATEYOUROWNSECRETKEY
@@ -90,6 +90,10 @@ py -m venv venv/
 -  Run the development server:
   ```
   py app.py
+  ```
+-  Run the production server:
+  ```
+  flask run
   ```
 - Navigate to 
     - [http://localhost:5000](http://localhost:5000)
