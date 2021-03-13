@@ -108,6 +108,182 @@ py -m venv venv/
     - [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
     - To stop server Press CTRL+C to quit 
 
+## Folder Tree
+
+```
+|   .env
+|   .gitignore
+|   .slugignore
+|   app.py
+|   config.py
+|   favicon.ico
+|   Procfile
+|   Procfile.windows
+|   README.md
+|   requirements.txt
+|   
++---dataset
+|       Stations.csv
+|       
++---static
+|   +---bootstrap
+|   |   +---css
+|   |   |       bootstrap-grid.css
+|   |   |       bootstrap-grid.css.map
+|   |   |       bootstrap-grid.min.css
+|   |   |       bootstrap-grid.min.css.map
+|   |   |       bootstrap-grid.rtl.css
+|   |   |       bootstrap-grid.rtl.css.map
+|   |   |       bootstrap-grid.rtl.min.css
+|   |   |       bootstrap-grid.rtl.min.css.map
+|   |   |       bootstrap-reboot.css
+|   |   |       bootstrap-reboot.css.map
+|   |   |       bootstrap-reboot.min.css
+|   |   |       bootstrap-reboot.min.css.map
+|   |   |       bootstrap-reboot.rtl.css
+|   |   |       bootstrap-reboot.rtl.css.map
+|   |   |       bootstrap-reboot.rtl.min.css
+|   |   |       bootstrap-reboot.rtl.min.css.map
+|   |   |       bootstrap-utilities.css
+|   |   |       bootstrap-utilities.css.map
+|   |   |       bootstrap-utilities.min.css
+|   |   |       bootstrap-utilities.min.css.map
+|   |   |       bootstrap-utilities.rtl.css
+|   |   |       bootstrap-utilities.rtl.css.map
+|   |   |       bootstrap-utilities.rtl.min.css
+|   |   |       bootstrap-utilities.rtl.min.css.map
+|   |   |       bootstrap.css
+|   |   |       bootstrap.css.map
+|   |   |       bootstrap.min.css
+|   |   |       bootstrap.min.css.map
+|   |   |       bootstrap.rtl.css
+|   |   |       bootstrap.rtl.css.map
+|   |   |       bootstrap.rtl.min.css
+|   |   |       bootstrap.rtl.min.css.map
+|   |   |       
+|   |   \---js
+|   |           bootstrap.bundle.js
+|   |           bootstrap.bundle.js.map
+|   |           bootstrap.bundle.min.js
+|   |           bootstrap.bundle.min.js.map
+|   |           bootstrap.esm.js
+|   |           bootstrap.esm.js.map
+|   |           bootstrap.esm.min.js
+|   |           bootstrap.esm.min.js.map
+|   |           bootstrap.js
+|   |           bootstrap.js.map
+|   |           bootstrap.min.js
+|   |           bootstrap.min.js.map
+|   |           
+|   +---css
+|   |       style.css
+|   |       
+|   +---fontawesome
+|   |   |   attribution.js
+|   |   |   LICENSE.txt
+|   |   |   
+|   |   +---css
+|   |   |       all.css
+|   |   |       all.min.css
+|   |   |       brands.css
+|   |   |       brands.min.css
+|   |   |       fontawesome.css
+|   |   |       fontawesome.min.css
+|   |   |       regular.css
+|   |   |       regular.min.css
+|   |   |       solid.css
+|   |   |       solid.min.css
+|   |   |       svg-with-js.css
+|   |   |       svg-with-js.min.css
+|   |   |       v4-shims.css
+|   |   |       v4-shims.min.css
+|   |   |       
+|   |   +---js
+|   |   |       all.js
+|   |   |       all.min.js
+|   |   |       brands.js
+|   |   |       brands.min.js
+|   |   |       conflict-detection.js
+|   |   |       conflict-detection.min.js
+|   |   |       fontawesome.js
+|   |   |       fontawesome.min.js
+|   |   |       regular.js
+|   |   |       regular.min.js
+|   |   |       solid.js
+|   |   |       solid.min.js
+|   |   |       v4-shims.js
+|   |   |       v4-shims.min.js
+|   |               
+|   +---gen
+|   |   |   all.css
+|   |   |   all.js
+|   |   |   bootstrap.bundle.min.js.map
+|   |   |   bootstrap.min.css.map
+|   |   |   leaflet.js.map
+|   |   |   
+|   |   \---images
+|   |           layers-2x.png
+|   |           layers.png
+|   |           marker-icon-2x.png
+|   |           marker-icon.png
+|   |           marker-shadow.png
+|   |           
+|   +---images
+|   |       elevator.svg
+|   |       esc.png
+|   |       escalator.svg
+|   |       favicon.png
+|   |       img_elevators.jpg
+|   |       img_subway_station_elevator_doors.jpg
+|   |       
+|   +---js
+|   |       jquery.min.js
+|   |       popper.min.js
+|   |       scripts.js
+|   |       
+|   +---leaflet
+|   |   |   leaflet-src.esm.js
+|   |   |   leaflet-src.esm.js.map
+|   |   |   leaflet-src.js
+|   |   |   leaflet-src.js.map
+|   |   |   leaflet.css
+|   |   |   leaflet.js
+|   |   |   leaflet.js.map
+|   |   |   
+|   |   \---images
+|   |           layers-2x.png
+|   |           layers.png
+|   |           marker-icon-2x.png
+|   |           marker-icon.png
+|   |           marker-shadow.png
+|   |           
+|   \---webfonts
+|           fa-brands-400.eot
+|           fa-brands-400.svg
+|           fa-brands-400.ttf
+|           fa-brands-400.woff
+|           fa-brands-400.woff2
+|           fa-regular-400.eot
+|           fa-regular-400.svg
+|           fa-regular-400.ttf
+|           fa-regular-400.woff
+|           fa-regular-400.woff2
+|           fa-solid-900.eot
+|           fa-solid-900.svg
+|           fa-solid-900.ttf
+|           fa-solid-900.woff
+|           fa-solid-900.woff2
+|           
++---templates
+|   |   base.html
+|   |   
+|   \---pages
+|           404.html
+|           about.html
+|           index.html
+|           
+```
+
 ## Git
 
 [Git](https://git-scm.com/) is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.
